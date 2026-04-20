@@ -7,36 +7,65 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.trabajointermedio.databinding.FragmentLoginBinding
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : Fragment() {
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentLoginBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = FirebaseAuth.getInstance()
+
+        // Restore values from Bundle arguments
+        val emailArg = arguments?.getString("email") ?: ""
+        val passwordArg = arguments?.getString("password") ?: ""
         
+        if (emailArg.isNotEmpty()) binding.emailEditText.setText(emailArg)
+        if (passwordArg.isNotEmpty()) binding.passwordEditText.setText(passwordArg)
+
         binding.loginButton.setOnClickListener {
-            // Handle login logic
+            val email = binding.emailEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Snackbar.make(binding.root, "Por favor, rellena todos los campos", Snackbar.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Snackbar.make(binding.root, "Puto", Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        Snackbar.make(binding.root, "Maricón", Snackbar.LENGTH_SHORT).show()
+                    }
+            }
         }
 
         binding.registerButton.setOnClickListener {
-            // Navigate to RegisterFragment using Navigation Component
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+            // Pass current data to RegisterFragment
+            val bundle = Bundle().apply {
+                putString("email", binding.emailEditText.text.toString())
+                putString("password", binding.passwordEditText.text.toString())
+            }
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment, bundle)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 }

@@ -10,13 +10,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.trabajointermedio.databinding.FragmentRegisterBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.io.root
+import com.google.firebase.database.FirebaseDatabase
 
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
-    private lateinit var name: String
-    private lateinit var pass: String
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
 
@@ -29,59 +27,56 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        auth = FirebaseAuth.getInstance()
-        // Esta URL es la de arriba del todo
-        database = FirebaseDatabase.getInstance("https://android-untar-la-manteca-default-rtdb.europe-west1.firebasedatabase.app/")
-        name = requireArguments().getString("name").toString()
-        pass = requireArguments().getString("pass").toString()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance("https://android-untar-la-manteca-default-rtdb.europe-west1.firebasedatabase.app/")
+
+        // Restore values from Bundle arguments
+        val emailArg = arguments?.getString("email") ?: ""
+        val passwordArg = arguments?.getString("password") ?: ""
+        
+        if (emailArg.isNotEmpty()) binding.emailEditText.setText(emailArg)
+        if (passwordArg.isNotEmpty()) binding.passwordEditText.setText(passwordArg)
+
         binding.backButton.setOnClickListener {
-            // Navigate to RegisterFragment using Navigation Component
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            // Pass current data back to LoginFragment
+            val bundle = Bundle().apply {
+                putString("email", binding.emailEditText.text.toString())
+                putString("password", binding.passwordEditText.text.toString())
+            }
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment, bundle)
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        // todas las acciones
-        binding.btnRegistro.setOnClickListener {
-            val email = binding.editCorreo.text.toString()
-            val pass = binding.editPass.text.toString()
-            val name = binding.editNombre.text.toString()
-            val surname = binding.editApellido.text.toString()
-            auth.createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        // Podríamos volver al login o ir directamente a la main
-                        Snackbar.make(binding.root, "Registro completado con éxito", Snackbar.LENGTH_LONG).show()
-                        /*.setAction("OK") {
-                            findNavController().navigate(R.id.action)
-                        }*/
+        binding.registerButton.setOnClickListener {
+            val name = binding.nameEditText.text.toString()
+            val email = binding.emailEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
 
-                        // Cuando creamos el usuario lo mete en la base de datos
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                Snackbar.make(binding.root, "Por favor, rellena todos los campos", Snackbar.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
                         database.reference.child("users")
                             .child(auth.currentUser!!.uid)
                             .child("name")
                             .setValue(name)
 
-                        parentFragmentManager.popBackStack()
+                        Snackbar.make(binding.root, "Registro completado con éxito", Snackbar.LENGTH_LONG).show()
+                        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     } else {
-                        Snackbar.make(binding.root, "Registro erróneo: ${it.exception?.message}", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(binding.root, "Error: ${task.exception?.message}", Snackbar.LENGTH_LONG).show()
                     }
                 }
         }
-        binding.editCorreo.setText(name)
-        binding.editPass.setText(pass)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
     }
 }
