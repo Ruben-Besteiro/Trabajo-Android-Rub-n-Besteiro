@@ -7,7 +7,6 @@ android {
     namespace = "com.example.trabajointermedio"
     compileSdk = 36
 
-
     defaultConfig {
         applicationId = "com.example.trabajointermedio"
         minSdk = 26
@@ -33,7 +32,7 @@ android {
     }
 
     viewBinding {
-        enable = true;
+        enable = true
     }
     buildToolsVersion = "36.1.0"
 }
@@ -50,6 +49,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.glide)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
