@@ -59,13 +59,25 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            // Añadimos al usuario a la tabla de usuarios
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        val uid = auth.currentUser?.uid
+                        if (uid == null) {
+                            Snackbar.make(binding.root, "No se pudo obtener el usuario recién creado", Snackbar.LENGTH_LONG).show()
+                            return@addOnCompleteListener
+                        }
+
+                        val userData = mapOf(
+                            "name" to name,
+                            // Firebase RTDB elimina nodos null; con este marcador se garantiza que exista la sección.
+                            "favs" to mapOf("_placeholder" to true)
+                        )
+
                         database.reference.child("users")
-                            .child(auth.currentUser!!.uid)
-                            .child("name")
-                            .setValue(name)
+                            .child(uid)
+                            .setValue(userData)
 
                         Snackbar.make(binding.root, "Registro completado con éxito", Snackbar.LENGTH_LONG).show()
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)

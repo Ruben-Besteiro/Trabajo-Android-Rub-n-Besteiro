@@ -1,5 +1,6 @@
 package com.example.trabajointermedio
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,9 +49,11 @@ class LoginFragment : Fragment() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Snackbar.make(binding.root, "Puto", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Bienvenido", Snackbar.LENGTH_SHORT).show()
+                        val intent = Intent(requireContext(), ActivityMain::class.java)
+                        startActivity(intent)
                     } else {
-                        Snackbar.make(binding.root, "Maricón", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "El usuario no existe", Snackbar.LENGTH_SHORT).show()
                     }
             }
         }
@@ -62,6 +65,12 @@ class LoginFragment : Fragment() {
                 putString("password", binding.passwordEditText.text.toString())
             }
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment, bundle)
+        }
+
+        // Para salir, crasheamos la aplicación a propósito
+        binding.salirButton.setOnClickListener {
+            val fhqwhgads = null
+            startActivity(fhqwhgads!!)
         }
     }
 

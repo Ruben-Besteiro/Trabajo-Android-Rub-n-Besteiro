@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "28185913380",
+    "firebase_url": "https://android-untar-la-manteca-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "android-untar-la-manteca",
+    "storage_bucket": "android-untar-la-manteca.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28185913380:android:362e6784f87d19315150b1",
+        "android_client_info": {
+          "package_name": "com.example.tiendafragments"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6V3pNBlaWbTpUqyAMdKwgMK-EaAGSM28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28185913380:android:2acc9743838c09295150b1",
+        "android_client_info": {
+          "package_name": "com.example.trabajointermedio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6V3pNBlaWbTpUqyAMdKwgMK-EaAGSM28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
