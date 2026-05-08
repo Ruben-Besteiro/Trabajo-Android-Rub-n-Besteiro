@@ -30,36 +30,43 @@ class LoginFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Restore values from Bundle arguments
+        // Recuperamos los datos que nos hayan pasado desde el registro (si existen)
         val emailArg = arguments?.getString("email") ?: ""
         val passwordArg = arguments?.getString("password") ?: ""
         
         if (emailArg.isNotEmpty()) binding.emailEditText.setText(emailArg)
         if (passwordArg.isNotEmpty()) binding.passwordEditText.setText(passwordArg)
 
+        // Acción al pulsar el botón de Iniciar Sesión
         binding.loginButton.setOnClickListener {
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
+            val email = binding.emailEditText.getText().toString()
+            val password = binding.passwordEditText.getText().toString()
 
+            // Si las cosas están vacías no nos deja entrar
             if (email.isEmpty() || password.isEmpty()) {
                 Snackbar.make(binding.root, "Por favor, rellena todos los campos", Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
+            // Nos logeamos con Firebase
             auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Snackbar.make(binding.root, "Bienvenido", Snackbar.LENGTH_SHORT).show()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Snackbar.make(binding.root, "¡Bienvenido!", Snackbar.LENGTH_SHORT).show()
+                        
+                        // Si el login es correcto, vamos a la Activity principal
                         val intent = Intent(requireContext(), ActivityMain::class.java)
                         startActivity(intent)
+                        activity?.finish()
                     } else {
-                        Snackbar.make(binding.root, "El usuario no existe", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Error: El usuario no existe o los datos son incorrectos", Snackbar.LENGTH_SHORT).show()
                     }
             }
         }
 
+        // Acción para ir a la pantalla de Registro
         binding.registerButton.setOnClickListener {
-            // Pass current data to RegisterFragment
+            // Metemos datos para luego sacarlos en el otro fragmento
             val bundle = Bundle().apply {
                 putString("email", binding.emailEditText.text.toString())
                 putString("password", binding.passwordEditText.text.toString())
@@ -67,14 +74,9 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment, bundle)
         }
 
-        // Para salir, crasheamos la aplicación a propósito
+        // Botón para salir (cerrar la aplicación)
         binding.salirButton.setOnClickListener {
-            val fhqwhgads = null
-            startActivity(fhqwhgads!!)
+            activity?.finishAffinity()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 }

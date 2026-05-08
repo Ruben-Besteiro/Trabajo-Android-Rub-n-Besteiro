@@ -33,7 +33,7 @@ class RegisterFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance("https://android-untar-la-manteca-default-rtdb.europe-west1.firebasedatabase.app/")
 
-        // Restore values from Bundle arguments
+        // Pillamos cosas del otro fragmento (si existen)
         val emailArg = arguments?.getString("email") ?: ""
         val passwordArg = arguments?.getString("password") ?: ""
         
@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
         if (passwordArg.isNotEmpty()) binding.passwordEditText.setText(passwordArg)
 
         binding.backButton.setOnClickListener {
-            // Pass current data back to LoginFragment
+            // Pasamos los datos de vuelta al login
             val bundle = Bundle().apply {
                 putString("email", binding.emailEditText.text.toString())
                 putString("password", binding.passwordEditText.text.toString())
@@ -69,11 +69,7 @@ class RegisterFragment : Fragment() {
                             return@addOnCompleteListener
                         }
 
-                        val userData = mapOf(
-                            "name" to name,
-                            // Firebase RTDB elimina nodos null; con este marcador se garantiza que exista la sección.
-                            "favs" to mapOf("_placeholder" to true)
-                        )
+                        val userData = mapOf("name" to name)
 
                         database.reference.child("users")
                             .child(uid)

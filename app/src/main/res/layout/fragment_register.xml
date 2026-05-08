@@ -47,7 +47,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <EditText
-        android:id="@+id/email_edit_text"
+        android:id="@+id/emailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -61,7 +61,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <EditText
-        android:id="@+id/password_edit_text"
+        android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -71,11 +71,11 @@
         android:inputType="textPassword"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/email_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/register_button"
+        android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
@@ -83,11 +83,11 @@
         android:text="Registrarse"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/back_button"
+        android:id="@+id/backButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="12dp"
@@ -96,7 +96,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_button"
+        app:layout_constraintTop_toBottomOf="@+id/registerButton"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="-16dp" />
 

@@ -25,7 +25,8 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.trabajointermedio.RegisterFragment"
-        android:label="RegisterFragment" >
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -37,5 +38,29 @@
             android:name="password"
             app:argType="string"
             android:defaultValue="" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/allCarsFragment"
+        android:name="com.example.trabajointermedio.ShowAllCarsFragment"
+        android:label="AllCarsFragment"
+        tools:layout="@layout/fragment_cars_list">
+        <action
+            android:id="@+id/action_allCarsFragment_to_showFavoriteCarsFragment"
+            app:destination="@id/showFavoriteCarsFragment"
+            app:popUpTo="@id/allCarsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/showFavoriteCarsFragment"
+        android:name="com.example.trabajointermedio.ShowFavoriteCarsFragment"
+        android:label="ShowFavoriteCarsFragment"
+        tools:layout="@layout/fragment_cars_list">
+        <action
+            android:id="@+id/action_showFavoriteCarsFragment_to_allCarsFragment"
+            app:destination="@id/allCarsFragment"
+            app:popUpTo="@id/showFavoriteCarsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

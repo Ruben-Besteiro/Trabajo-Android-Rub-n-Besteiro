@@ -29,7 +29,7 @@
         tools:layout_editor_absoluteX="0dp">
 
         <EditText
-            android:id="@+id/email_edit_text"
+            android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@android:drawable/ic_dialog_email"
@@ -40,7 +40,7 @@
             android:textColorHint="@color/white" />
 
         <EditText
-            android:id="@+id/password_edit_text"
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -52,7 +52,7 @@
             android:textColorHint="@color/white" />
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="24dp"
@@ -62,7 +62,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="12dp"
@@ -72,7 +72,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/salir_button"
+            android:id="@+id/salirButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="12dp"
