@@ -1,7 +1,7 @@
 package com.example.trabajointermedio
 
-// Lo único que cambia entre fragmentos es un solo booleano, y se mira en el onViewCreated
-// (después de pasar por funciones intermedias)
+// Este fragmento y el de ShowFavoriteCars heredan de CarsFragment. El susodicho no se utiliza
+// Lo que hacemos al cambiar de fragmento es cambiar el booleano entre true y false
 class ShowAllCarsFragment : CarsFragment() {
     override val onlyFavorites: Boolean = false
 }

@@ -26,15 +26,13 @@ abstract class CarsFragment : Fragment(R.layout.fragment_cars_list) {
     protected val binding get() = _binding!!
 
     private lateinit var carAdapter: CarAdapter
-    
-    // Usamos variables normales (var) y estructuras fijas (Array y Set)
+
     private var allCarsList = emptyArray<Car>()
     private var favoriteIds = emptySet<String>()
-    
     private lateinit var requestQueue: RequestQueue
     
     private val BASE_URL = "https://android-untar-la-manteca-default-rtdb.europe-west1.firebasedatabase.app"
-    protected abstract val onlyFavorites: Boolean
+    protected abstract val onlyFavorites: Boolean       // Abstract porque solo se modifica en los fragmentos concretos
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,13 +46,15 @@ abstract class CarsFragment : Fragment(R.layout.fragment_cars_list) {
     }
 
     private fun setupRecyclerView() {
-        // Inicializamos el adaptador con un array vacio
-        carAdapter = CarAdapter(emptyArray()) {
+        // Inicializamos el adaptador con una lista vacía especificando el tipo
+        carAdapter = CarAdapter(emptyList()) {
             handleFavoriteClick(it)
         }
+
+        // Esta línea es la que enlaza el adaptador con la parte gráfica
         binding.recyclerCoches.adapter = carAdapter
         
-        // Configuramos el diseño: 1 columna en vertical, 2 en horizontal
+        // Configuramos el layout que tendrá el recycler
         val isPortrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
         binding.recyclerCoches.layoutManager = if (isPortrait) {
             LinearLayoutManager(requireContext())
@@ -168,7 +168,8 @@ abstract class CarsFragment : Fragment(R.layout.fragment_cars_list) {
         } else {
             updatedList
         }
-        
+
+        // El adapter actualiza la lista cada vez que le damos al corazón y al abrir la aplicación
         carAdapter.submitList(finalList)
     }
 

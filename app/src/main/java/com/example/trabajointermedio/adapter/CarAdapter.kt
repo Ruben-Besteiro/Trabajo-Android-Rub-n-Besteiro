@@ -9,50 +9,50 @@ import com.example.trabajointermedio.R
 import com.example.trabajointermedio.databinding.CarCardBinding
 import com.example.trabajointermedio.model.Car
 
-class CarAdapter(private var cars: Array<Car>, private val onFavClick: (Car) -> Unit) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
-    inner class CarViewHolder(val binding: CarCardBinding) : RecyclerView.ViewHolder(binding.root)
+class CarAdapter(
+    private var cars: List<Car>,
+    private val onFavClick: (Car) -> Unit
+) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
 
+    class CarViewHolder(val binding: CarCardBinding) : RecyclerView.ViewHolder(binding.root)
+
+    // Aquí se infla el layout de la fila y lo devolvemos
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder {
-        val binding = CarCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CarViewHolder(binding)
+        val b = CarCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CarViewHolder(b)
     }
 
+    // Aquí metemos las cosas
     override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
         val car = cars[position]
+        val b = holder.binding
 
-        holder.binding.apply {
-            carName.text = car.name
-            
-            // Cargamos la imagen con Glide
-            Glide.with(root.context)
-                .load(car.image)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(imageProduct)
+        b.carName.text = car.name
 
-            buttonFav.text = if (car.favorite) "💙" else "🤍"
-            buttonFav.setOnClickListener {
-                onFavClick(car)
-            }
+        // Carga de imagen directa
+        Glide.with(b.root.context).load(car.image).placeholder(R.mipmap.ic_launcher).into(b.imageProduct)
 
-            buttonDetalles.text = "Ver detalles"
-            buttonDetalles.setOnClickListener {
-                val yearText = car.year ?: "No disponible"
-                // Al darle al botón mostramos un modal con información
-                AlertDialog.Builder(root.context)
-                    .setTitle(car.name)
-                    .setMessage("Año de fabricación: $yearText")
-                    .setPositiveButton("Cerrar", null)
-                    .show()
-            }
+        // Botón de favorito
+        b.buttonFav.text = if (car.favorite) "💙" else "🤍"
+        b.buttonFav.setOnClickListener {
+            onFavClick(car)     // Llama a handleFavoriteClick en el fragmento
+        }
+
+        // En el botón de detalles hau un escuchador que muestra un modal
+        b.buttonDetalles.setOnClickListener {
+            AlertDialog.Builder(b.root.context)
+                .setTitle(car.name)
+                .setMessage("Año: ${car.year ?: "Desconocido"}")
+                .setPositiveButton("OK", null)
+                .show()
         }
     }
 
-    override fun getItemCount(): Int = cars.size
+    override fun getItemCount() = cars.size
 
-    // Al cambiar los datos actualizamos
-    fun submitList(newCars: List<Car>) {
-        this.cars = newCars.toTypedArray()
+    // Método de actualización de la lista
+    fun submitList(newList: List<Car>) {
+        cars = newList
         notifyDataSetChanged()
     }
 }
